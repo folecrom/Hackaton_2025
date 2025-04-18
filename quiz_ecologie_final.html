@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz Écologie Gamifié</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e0f7e9;
+      color: #2e7d32;
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+      color: #1b5e20;
+    }
+    .question {
+      margin-bottom: 20px;
+      padding: 15px;
+      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      background-color: #66bb6a;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #43a047;
+    }
+    .score {
+      font-size: 1.2em;
+      margin-top: 30px;
+      text-align: center;
+    }
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+    .correct {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <h1>🌍 Quiz Écologie</h1>
+  <div id="quiz"></div>
+  <div class="score" id="score"></div>
+  <div id="feedback"></div>
+
+  <script>
+    const questions = [
+      {
+        question: "Quel déchet met le plus de temps à se décomposer dans la nature ?",
+        options: [
+          "Papier journal",
+          "Canette en aluminium",
+          "Mégot de cigarette",
+          "Bouteille en plastique"
+        ],
+        answer: 3
+      },
+      {
+        question: "Quel geste consomme le plus d'eau ?",
+        options: [
+          "Prendre une douche de 5 minutes",
+          "Laver sa voiture au jet d’eau",
+          "Tirer la chasse d’eau une fois",
+          "Faire la vaisselle à la main"
+        ],
+        answer: 1
+      },
+      {
+        question: "Quel est l’impact principal du dioxyde de carbone (CO₂) ?",
+        options: [
+          "Pollution des océans",
+          "Réchauffement climatique",
+          "Déforestation",
+          "Extinction des espèces"
+        ],
+        answer: 1
+      },
+      {
+        question: "Quelle est l’option la plus écolo pour faire ses courses ?",
+        options: [
+          "Sac en plastique",
+          "Sac en papier",
+          "Sac en coton réutilisable",
+          "Caddie jetable"
+        ],
+        answer: 2
+      },
+      {
+        question: "Quelle ampoule est la plus économique et écologique ?",
+        options: [
+          "Halogène",
+          "Incandescente",
+          "LED",
+          "Fluocompacte"
+        ],
+        answer: 2
+      },
+      {
+        question: "Quel appareil consomme le plus d’énergie ?",
+        options: [
+          "Four",
+          "Télévision",
+          "Chargeur de téléphone",
+          "Lampe"
+        ],
+        answer: 0
+      },
+      {
+        question: "Quel est le principal gaz à effet de serre ?",
+        options: [
+          "Oxygène",
+          "Azote",
+          "Dioxyde de carbone",
+          "Méthane"
+        ],
+        answer: 2
+      },
+      {
+        question: "Quelle est la meilleure saison pour consommer des fraises localement en France ?",
+        options: [
+          "Janvier",
+          "Avril",
+          "Août",
+          "Novembre"
+        ],
+        answer: 1
+      },
+      {
+        question: "Quel transport émet le plus de CO₂ par passager au kilomètre ?",
+        options: [
+          "Train",
+          "Avion",
+          "Bus",
+          "Voiture électrique"
+        ],
+        answer: 1
+      },
+      {
+        question: "Si tu réduis ta consommation de viande, quel impact positif as-tu sur la planète ?",
+        options: [
+          "Réduction de la déforestation",
+          "Augmentation du recyclage",
+          "Moins de voitures sur la route",
+          "Plus d’électricité verte"
+        ],
+        answer: 0
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+    let feedback = [];
+
+    const quizDiv = document.getElementById('quiz');
+    const scoreDiv = document.getElementById('score');
+    const feedbackDiv = document.getElementById('feedback');
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      quizDiv.innerHTML = `<div class="question">
+        <p><strong>${currentQuestion + 1}. ${q.question}</strong></p>
+        ${q.options.map((opt, index) => `<button onclick="answer(${index})">${opt}</button>`).join('<br>')}
+      </div>`;
+    }
+
+    function answer(selected) {
+      const correctAnswer = questions[currentQuestion].options[questions[currentQuestion].answer];
+      if (selected === questions[currentQuestion].answer) {
+        score += 10;
+        feedback.push(`<p class="correct">Question ${currentQuestion + 1}: Bonne réponse! ${correctAnswer}</p>`);
+      } else {
+        feedback.push(`<p class="error">Question ${currentQuestion + 1}: Mauvaise réponse! La bonne réponse était: <strong>${correctAnswer}</strong></p>`);
+      }
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showScore();
+      }
+    }
+
+    function showScore() {
+      let level = "";
+      if (score <= 30) level = "🌱 Débutant écolo";
+      else if (score <= 70) level = "🌿 Écolo conscient";
+      else level = "🌳 Héros de la planète";
+
+      quizDiv.innerHTML = "";
+      scoreDiv.innerHTML = `<p>Score final : <strong>${score} / 100</strong></p><p>${level}</p>`;
+      feedbackDiv.innerHTML = feedback.join('');
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
